@@ -1,0 +1,57 @@
+object frmChat: TfrmChat
+  Left = 350
+  Height = 400
+  Top = 250
+  Width = 500
+  Caption = 'Local AI Chat'
+  ClientHeight = 400
+  ClientWidth = 500
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  Position = poScreenCenter
+  object memChat: TMemo
+    Left = 10
+    Height = 320
+    Top = 10
+    Width = 480
+    Align = alClient
+    BorderSpacing.Around = 10
+    ReadOnly = True
+    ScrollBars = ssAutoVertical
+    TabOrder = 0
+  end
+  object pnlInput: TPanel
+    Left = 0
+    Height = 50
+    Top = 350
+    Width = 500
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 50
+    ClientWidth = 500
+    TabOrder = 1
+    object edtQuestion: TEdit
+      Left = 10
+      Height = 30
+      Top = 10
+      Width = 390
+      Align = alClient
+      BorderSpacing.Around = 10
+      OnKeyPress = edtQuestionKeyPress
+      TabOrder = 0
+    end
+    object btnSend: TButton
+      Left = 410
+      Height = 30
+      Top = 10
+      Width = 80
+      Align = alRight
+      BorderSpacing.Around = 10
+      Caption = 'Send'
+      Default = True
+      OnClick = btnSendClick
+      TabOrder = 1
+    end
+  end
+end
