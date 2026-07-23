@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus,
-  StdCtrls, ComCtrls, Process, IniFiles, fphttpclient, opensslsockets, Types;
+  StdCtrls, ComCtrls, Process, IniFiles, fphttpclient, opensslsockets, Types, Registry;
 
 type
   TTranslation = record
@@ -31,6 +31,11 @@ type
     BtnCancel: string;
     BtnBenchmark: string;
     BtnChat: string;
+    CtxLabel: string;
+    MaxNewTokensLabel: string;
+    AutoStartLabel: string;
+    AutoOnLabel: string;
+    BtnSetup: string;
   end;
 
   { TfrmManager }
@@ -44,18 +49,25 @@ type
     btnClearLog: TButton;
     btnBenchmark: TButton;
     btnChat: TButton;
+    btnSetup: TButton;
     cmbModel: TComboBox;
     cmbLanguage: TComboBox;
+    cmbMaxNewTokens: TComboBox;
+    chkAutoStart: TCheckBox;
+    chkAutoOn: TCheckBox;
     edtProjectPath: TEdit;
     edtServerPath: TEdit;
     edtModelsPath: TEdit;
     edtPort: TEdit;
+    edtCtx: TEdit;
     lblProjectPath: TLabel;
     lblServerPath: TLabel;
     lblModelsPath: TLabel;
     lblPort: TLabel;
     lblModel: TLabel;
     lblLanguage: TLabel;
+    lblCtx: TLabel;
+    lblMaxNewTokens: TLabel;
     memLog: TMemo;
     pgcMain: TPageControl;
     tsConfig: TTabSheet;
@@ -84,6 +96,7 @@ type
     procedure btnClearLogClick(Sender: TObject);
     procedure btnBenchmarkClick(Sender: TObject);
     procedure btnChatClick(Sender: TObject);
+    procedure btnSetupClick(Sender: TObject);
     procedure cmbLanguageChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -102,12 +115,18 @@ type
     FChatServerPath: string;
     FModelsPath: string;
     FPort: string;
+    FCtx: string;
+    FMaxNewTokens: string;
+    FAutoStart: Boolean;
+    FAutoOn: Boolean;
+    FLastStartAttempt: TDateTime;
     FSelectedModel: string;
     FLanguageIdx: Integer;
     FServerActive: Boolean;
     FServerProcess: TProcess;
     FActiveIcon: TIcon;
     FInactiveIcon: TIcon;
+    procedure SetAutoStartWindows(const AEnable: Boolean);
     function GenerateTrayIcon(AActive: Boolean): TIcon;
     function GetConfigPath: string;
     procedure LoadConfig;
@@ -151,7 +170,12 @@ const
       BtnSave: 'Save';
       BtnCancel: 'Cancel';
       BtnBenchmark: 'Benchmark';
-      BtnChat: 'Chat'
+      BtnChat: 'Chat';
+      CtxLabel: 'Context (ctx):';
+      MaxNewTokensLabel: 'Max New Tokens:';
+      AutoStartLabel: 'Auto Start (Windows Startup)';
+      AutoOnLabel: 'Auto On (Auto Restart Server)';
+      BtnSetup: 'Setup'
     ),
     // 1: Português
     (
@@ -175,7 +199,12 @@ const
       BtnSave: 'Salvar';
       BtnCancel: 'Cancelar';
       BtnBenchmark: 'Benchmark';
-      BtnChat: 'Chat'
+      BtnChat: 'Chat';
+      CtxLabel: 'Contexto (ctx):';
+      MaxNewTokensLabel: 'Max Novos Tokens:';
+      AutoStartLabel: 'Auto Start (Iniciar com o Windows)';
+      AutoOnLabel: 'Auto On (Auto reiniciar ChatServer)';
+      BtnSetup: 'Setup'
     ),
     // 2: Français
     (
@@ -199,7 +228,12 @@ const
       BtnSave: 'Enregistrer';
       BtnCancel: 'Annuler';
       BtnBenchmark: 'Benchmark';
-      BtnChat: 'Chat'
+      BtnChat: 'Chat';
+      CtxLabel: 'Contexte (ctx) :';
+      MaxNewTokensLabel: 'Max Nouveaux Tokens :';
+      AutoStartLabel: 'Auto Start (Démarrer avec Windows)';
+      AutoOnLabel: 'Auto On (Redémarrer serveur auto)';
+      BtnSetup: 'Setup'
     ),
     // 3: Deutsch
     (
@@ -207,7 +241,7 @@ const
       StatusLabelOnline: 'ChatServer: Online';
       StartMenu: 'ChatServer starten';
       StopMenu: 'ChatServer stoppen';
-      LogMenu: 'Log anzeigen';
+      LogMenu: 'Protokoll anzeigen';
       LanguageMenu: 'Sprache';
       ExitMenu: 'Beenden';
       FormTitle: 'ChatServer Manager';
@@ -216,14 +250,19 @@ const
       ModelLabel: 'Modellordner:';
       PathLabel: 'Projektpfad:';
       ServerPathLabel: 'Pfad zu ChatServer.exe:';
-      ModelsPathLabel: 'Pfad zum Modelle-Ordner:';
+      ModelsPathLabel: 'Pfad zum Modellordner:';
       TabConfig: 'Konfiguration';
-      TabLog: 'Log-Anzeige';
-      BtnClear: 'Leeren';
+      TabLog: 'Protokollanzeige';
+      BtnClear: 'Löschen';
       BtnSave: 'Speichern';
       BtnCancel: 'Abbrechen';
       BtnBenchmark: 'Benchmark';
-      BtnChat: 'Chat'
+      BtnChat: 'Chat';
+      CtxLabel: 'Kontext (ctx):';
+      MaxNewTokensLabel: 'Max Neue Token:';
+      AutoStartLabel: 'Auto Start (Mit Windows starten)';
+      AutoOnLabel: 'Auto On (Server auto neustarten)';
+      BtnSetup: 'Setup'
     ),
     // 4: Español
     (
@@ -231,23 +270,28 @@ const
       StatusLabelOnline: 'ChatServer: En línea';
       StartMenu: 'Iniciar ChatServer';
       StopMenu: 'Detener ChatServer';
-      LogMenu: 'Mostrar Log';
+      LogMenu: 'Mostrar registro';
       LanguageMenu: 'Idioma';
       ExitMenu: 'Salir';
       FormTitle: 'Administrador de ChatServer';
       ConfigTitle: 'Configuración';
       PortLabel: 'Puerto:';
-      ModelLabel: 'Carpeta del Modelo:';
-      PathLabel: 'Ruta del Proyecto:';
+      ModelLabel: 'Carpeta del modelo:';
+      PathLabel: 'Ruta del proyecto:';
       ServerPathLabel: 'Ruta de ChatServer.exe:';
       ModelsPathLabel: 'Ruta de la carpeta de modelos:';
       TabConfig: 'Configuración';
-      TabLog: 'Visor de Log';
+      TabLog: 'Visor de registro';
       BtnClear: 'Limpiar';
       BtnSave: 'Guardar';
       BtnCancel: 'Cancelar';
       BtnBenchmark: 'Benchmark';
-      BtnChat: 'Chat'
+      BtnChat: 'Chat';
+      CtxLabel: 'Contexto (ctx):';
+      MaxNewTokensLabel: 'Máx Nuevos Tokens:';
+      AutoStartLabel: 'Auto Start (Iniciar con Windows)';
+      AutoOnLabel: 'Auto On (Reiniciar servidor auto)';
+      BtnSetup: 'Setup'
     ),
     // 5: Arabic
     (
@@ -266,12 +310,17 @@ const
       ServerPathLabel: 'مسار ChatServer.exe:';
       ModelsPathLabel: 'مسار مجلد النماذج:';
       TabConfig: 'الإعدادات';
-      TabLog: 'عرض السجل';
+      TabLog: 'عارض السجل';
       BtnClear: 'مسح';
       BtnSave: 'حفظ';
       BtnCancel: 'إلغاء';
-      BtnBenchmark: 'القياس';
-      BtnChat: 'دردشة'
+      BtnBenchmark: 'اختبار الأداء';
+      BtnChat: 'دردشة';
+      CtxLabel: 'السياق (ctx):';
+      MaxNewTokensLabel: 'الحد الأقصى للرموز:';
+      AutoStartLabel: 'بدء تلقائي (مع ويندوز)';
+      AutoOnLabel: 'تشغيل تلقائي (إعادة تشغيل الخادم)';
+      BtnSetup: 'إعداد'
     ),
     // 6: Chinese
     (
@@ -295,7 +344,12 @@ const
       BtnSave: '保存';
       BtnCancel: '取消';
       BtnBenchmark: '基准测试';
-      BtnChat: '聊天'
+      BtnChat: '聊天';
+      CtxLabel: '上下文 (ctx):';
+      MaxNewTokensLabel: '最大新 Token:';
+      AutoStartLabel: '开机自启 (随 Windows 启动)';
+      AutoOnLabel: '自动开机 (自动重启 ChatServer)';
+      BtnSetup: '设置'
     ),
     // 7: Japanese
     (
@@ -311,15 +365,20 @@ const
       PortLabel: 'ポート:';
       ModelLabel: 'モデルフォルダ:';
       PathLabel: 'プロジェクトパス:';
-      ServerPathLabel: 'ChatServer.exe のパス:';
-      ModelsPathLabel: 'モデルフォルダ의パス:';
+      ServerPathLabel: 'ChatServer.exe パス:';
+      ModelsPathLabel: 'モデルフォルダパス:';
       TabConfig: '設定';
       TabLog: 'ログビューア';
       BtnClear: 'クリア';
       BtnSave: '保存';
       BtnCancel: 'キャンセル';
       BtnBenchmark: 'ベンチマーク';
-      BtnChat: 'チャット'
+      BtnChat: 'チャット';
+      CtxLabel: 'コンテキスト (ctx):';
+      MaxNewTokensLabel: '最大新規トークン:';
+      AutoStartLabel: '自動起動 (Windows 起動時)';
+      AutoOnLabel: '自動 On (サーバー自動再起動)';
+      BtnSetup: 'セットアップ'
     ),
     // 8: Russian
     (
@@ -343,7 +402,12 @@ const
       BtnSave: 'Сохранить';
       BtnCancel: 'Отмена';
       BtnBenchmark: 'Бенчмарк';
-      BtnChat: 'Чат'
+      BtnChat: 'Чат';
+      CtxLabel: 'Контекст (ctx):';
+      MaxNewTokensLabel: 'Макс. новых токенов:';
+      AutoStartLabel: 'Автозапуск (с Windows)';
+      AutoOnLabel: 'Авто On (Автоперезапуск)';
+      BtnSetup: 'Установка'
     )
   );
 
@@ -355,6 +419,31 @@ uses benchmarkform, chatform;
 
 { TfrmManager }
 
+procedure TfrmManager.SetAutoStartWindows(const AEnable: Boolean);
+var
+  Reg: TRegistry;
+begin
+  try
+    Reg := TRegistry.Create(KEY_ALL_ACCESS);
+    try
+      Reg.RootKey := HKEY_CURRENT_USER;
+      if Reg.OpenKey('Software\Microsoft\Windows\CurrentVersion\Run', True) then
+      begin
+        if AEnable then
+          Reg.WriteString('ChatServerManager', '"' + Application.ExeName + '"')
+        else if Reg.ValueExists('ChatServerManager') then
+          Reg.DeleteValue('ChatServerManager');
+        Reg.CloseKey;
+      end;
+    finally
+      Reg.Free;
+    end;
+  except
+    on E: Exception do
+      LogEvent('Erro ao atualizar Registro do Windows para Auto Start: ' + E.Message);
+  end;
+end;
+
 procedure TfrmManager.LogEvent(const AMsg: string);
 var
   TimestampedMsg: string;
@@ -365,8 +454,12 @@ end;
 
 function TfrmManager.GetConfigPath: string;
 var
-  AppDir: string;
+  LocalPath, AppDir: string;
 begin
+  LocalPath := ExtractFilePath(Application.ExeName) + 'manager.ini';
+  if FileExists(LocalPath) then
+    Exit(LocalPath);
+
   AppDir := GetAppConfigDir(False);
   if not DirectoryExists(AppDir) then
     ForceDirectories(AppDir);
@@ -483,6 +576,10 @@ begin
     FModelsPath := Ini.ReadString('Settings', 'ModelsPath', '');
 
     FPort := Ini.ReadString('Settings', 'Port', '8095');
+    FCtx := Ini.ReadString('Settings', 'Ctx', '8192');
+    FMaxNewTokens := Ini.ReadString('Settings', 'MaxNewTokens', '32');
+    FAutoStart := Ini.ReadBool('Settings', 'AutoStart', False);
+    FAutoOn := Ini.ReadBool('Settings', 'AutoOn', False);
     FSelectedModel := Ini.ReadString('Settings', 'Model', 'Qwen2.5-0.5B-Instruct');
     FLanguageIdx := Ini.ReadInteger('Settings', 'Language', 1);
   finally
@@ -500,11 +597,17 @@ begin
     Ini.WriteString('Settings', 'ChatServerPath', FChatServerPath);
     Ini.WriteString('Settings', 'ModelsPath', FModelsPath);
     Ini.WriteString('Settings', 'Port', FPort);
+    Ini.WriteString('Settings', 'Ctx', FCtx);
+    Ini.WriteString('Settings', 'MaxNewTokens', FMaxNewTokens);
+    Ini.WriteBool('Settings', 'AutoStart', FAutoStart);
+    Ini.WriteBool('Settings', 'AutoOn', FAutoOn);
     Ini.WriteString('Settings', 'Model', FSelectedModel);
     Ini.WriteInteger('Settings', 'Language', FLanguageIdx);
   finally
     Ini.Free;
   end;
+
+  SetAutoStartWindows(FAutoStart);
   LogEvent('Configurações salvas.');
 end;
 
@@ -558,6 +661,11 @@ begin
   lblPort.Caption := Trans.PortLabel;
   lblModel.Caption := Trans.ModelLabel;
   lblLanguage.Caption := Trans.LanguageMenu + ':';
+  lblCtx.Caption := Trans.CtxLabel;
+  lblMaxNewTokens.Caption := Trans.MaxNewTokensLabel;
+  chkAutoStart.Caption := Trans.AutoStartLabel;
+  chkAutoOn.Caption := Trans.AutoOnLabel;
+  btnSetup.Caption := Trans.BtnSetup;
   btnSave.Caption := Trans.BtnSave;
   btnCancelForm.Caption := Trans.BtnCancel;
   btnClearLog.Caption := Trans.BtnClear;
@@ -676,10 +784,18 @@ begin
   LogEvent('Iniciando binário: ' + ServerExePath);
   LogEvent('Modelo associado: ' + ModelPath);
   LogEvent('Porta selecionada: ' + FPort);
+  LogEvent('Contexto (ctx): ' + FCtx);
+  LogEvent('Max New Tokens: ' + FMaxNewTokens);
 
   FServerProcess := TProcess.Create(nil);
   FServerProcess.Executable := ServerExePath;
   FServerProcess.Parameters.Add(ModelPath);
+  FServerProcess.Parameters.Add('--ctx');
+  FServerProcess.Parameters.Add(FCtx);
+  FServerProcess.Parameters.Add('--max-new-tokens');
+  FServerProcess.Parameters.Add(FMaxNewTokens);
+  FServerProcess.Parameters.Add('--max-fast-memory');
+  FServerProcess.Parameters.Add('--stats');
   FServerProcess.Parameters.Add('--port');
   FServerProcess.Parameters.Add(FPort);
   FServerProcess.Options := [poNoConsole];
@@ -796,6 +912,13 @@ begin
   edtServerPath.Text := FChatServerPath;
   edtModelsPath.Text := FModelsPath;
   edtPort.Text := FPort;
+  edtCtx.Text := FCtx;
+  if cmbMaxNewTokens.Items.IndexOf(FMaxNewTokens) >= 0 then
+    cmbMaxNewTokens.ItemIndex := cmbMaxNewTokens.Items.IndexOf(FMaxNewTokens)
+  else
+    cmbMaxNewTokens.ItemIndex := 2;
+  chkAutoStart.Checked := FAutoStart;
+  chkAutoOn.Checked := FAutoOn;
   UpdateModelsCombo;
   cmbLanguage.ItemIndex := FLanguageIdx;
   UpdateUIStrings;
@@ -843,6 +966,14 @@ begin
   FChatServerPath := edtServerPath.Text;
   FModelsPath := edtModelsPath.Text;
   FPort := edtPort.Text;
+  FCtx := edtCtx.Text;
+  if Trim(FCtx) = '' then FCtx := '8192';
+  if cmbMaxNewTokens.ItemIndex >= 0 then
+    FMaxNewTokens := cmbMaxNewTokens.Items[cmbMaxNewTokens.ItemIndex]
+  else
+    FMaxNewTokens := '32';
+  FAutoStart := chkAutoStart.Checked;
+  FAutoOn := chkAutoOn.Checked;
   if cmbModel.ItemIndex >= 0 then
     FSelectedModel := cmbModel.Items[cmbModel.ItemIndex];
   FLanguageIdx := cmbLanguage.ItemIndex;
@@ -905,6 +1036,7 @@ end;
 procedure TfrmManager.timerStatusTimer(Sender: TObject);
 var
   Online: Boolean;
+  SecsSinceLast: Double;
 begin
   timerStatus.Enabled := False;
   try
@@ -917,6 +1049,17 @@ begin
       else
         LogEvent('Status detectado: OFFLINE');
       UpdateStatusUI;
+    end;
+
+    if FAutoOn and (not FServerActive) then
+    begin
+      SecsSinceLast := (Now - FLastStartAttempt) * 86400;
+      if (FLastStartAttempt = 0) or (SecsSinceLast >= 60) then
+      begin
+        LogEvent('Auto On: ChatServer está offline. Tentando reiniciar (intervalo de 1 minuto)...');
+        FLastStartAttempt := Now;
+        StartServer;
+      end;
     end;
   finally
     timerStatus.Enabled := True;
@@ -969,6 +1112,47 @@ end;
 procedure TfrmManager.menuChatClick(Sender: TObject);
 begin
   btnChatClick(Sender);
+end;
+
+procedure TfrmManager.btnSetupClick(Sender: TObject);
+var
+  SetupPath: string;
+  Proc: TProcess;
+begin
+  SetupPath := IncludeTrailingPathDelimiter(FProjectPath) + 'win_install' + PathDelim + 'installer.exe';
+
+  if not FileExists(SetupPath) then
+    SetupPath := IncludeTrailingPathDelimiter(FProjectPath) + 'win_install' + PathDelim + 'setup.exe';
+
+  if not FileExists(SetupPath) then
+    SetupPath := IncludeTrailingPathDelimiter(FProjectPath) + 'installer.exe';
+
+  if not FileExists(SetupPath) then
+    SetupPath := ExtractFilePath(Application.ExeName) + 'installer.exe';
+
+  if not FileExists(SetupPath) then
+    SetupPath := IncludeTrailingPathDelimiter(FProjectPath) + 'win_install' + PathDelim + 'installer.exe';
+
+  if not FileExists(SetupPath) then
+  begin
+    LogEvent('Erro: Executável do Setup não encontrado em: ' + SetupPath);
+    ShowMessage('Setup/Installer.exe não encontrado em ' + SetupPath + '.');
+    Exit;
+  end;
+
+  LogEvent('Iniciando o Setup: ' + SetupPath);
+  Proc := TProcess.Create(nil);
+  try
+    Proc.Executable := SetupPath;
+    Proc.Execute;
+  except
+    on E: Exception do
+    begin
+      LogEvent('Erro ao iniciar o Setup: ' + E.Message);
+      ShowMessage('Erro ao iniciar o Setup: ' + E.Message);
+    end;
+  end;
+  Proc.Free;
 end;
 
 end.

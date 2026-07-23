@@ -1,20 +1,20 @@
 object frmChat: TfrmChat
   Left = 350
-  Height = 400
+  Height = 450
   Top = 250
-  Width = 500
+  Width = 550
   Caption = 'Local AI Chat'
-  ClientHeight = 400
-  ClientWidth = 500
+  ClientHeight = 450
+  ClientWidth = 550
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
   Position = poScreenCenter
   object memChat: TMemo
     Left = 10
-    Height = 320
+    Height = 330
     Top = 10
-    Width = 480
+    Width = 530
     Align = alClient
     BorderSpacing.Around = 10
     ReadOnly = True
@@ -23,35 +23,58 @@ object frmChat: TfrmChat
   end
   object pnlInput: TPanel
     Left = 0
-    Height = 50
+    Height = 100
     Top = 350
-    Width = 500
+    Width = 550
     Align = alBottom
     BevelOuter = bvNone
-    ClientHeight = 50
-    ClientWidth = 500
+    ClientHeight = 100
+    ClientWidth = 550
     TabOrder = 1
-    object edtQuestion: TEdit
-      Left = 10
-      Height = 30
-      Top = 10
-      Width = 390
-      Align = alClient
-      BorderSpacing.Around = 10
-      OnKeyPress = edtQuestionKeyPress
-      TabOrder = 0
-    end
-    object btnSend: TButton
-      Left = 410
-      Height = 30
-      Top = 10
-      Width = 80
+    object pnlRightButtons: TPanel
+      Left = 445
+      Height = 100
+      Top = 0
+      Width = 105
       Align = alRight
-      BorderSpacing.Around = 10
-      Caption = 'Send'
-      Default = True
-      OnClick = btnSendClick
+      BevelOuter = bvNone
+      ClientHeight = 100
+      ClientWidth = 105
+      TabOrder = 0
+      object btnSend: TButton
+        Left = 5
+        Height = 42
+        Top = 5
+        Width = 95
+        Align = alTop
+        BorderSpacing.Around = 5
+        Caption = 'Enviar'
+        OnClick = btnSendClick
+        TabOrder = 0
+      end
+      object btnAttach: TButton
+        Left = 5
+        Height = 42
+        Top = 53
+        Width = 95
+        Align = alBottom
+        BorderSpacing.Around = 5
+        Caption = 'Anexar'
+        OnClick = btnAttachClick
+        TabOrder = 1
+      end
+    end
+    object memQuestion: TMemo
+      Left = 5
+      Height = 90
+      Top = 5
+      Width = 435
+      Align = alClient
+      BorderSpacing.Around = 5
+      OnKeyDown = memQuestionKeyDown
+      ScrollBars = ssAutoVertical
       TabOrder = 1
+      WantReturns = True
     end
   end
 end

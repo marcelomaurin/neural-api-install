@@ -140,7 +140,7 @@ object frmManager: TfrmManager
         Left = 10
         Height = 23
         Top = 230
-        Width = 180
+        Width = 110
         ItemHeight = 15
         Items.Strings = (
           'English'
@@ -156,6 +156,69 @@ object frmManager: TfrmManager
         Style = csDropDownList
         TabOrder = 8
         OnChange = cmbLanguageChange
+      end
+      object btnSetup: TButton
+        Left = 125
+        Height = 25
+        Top = 229
+        Width = 65
+        Caption = 'Setup'
+        OnClick = btnSetupClick
+        TabOrder = 9
+      end
+      object lblCtx: TLabel
+        Left = 200
+        Height = 15
+        Top = 210
+        Width = 70
+        Caption = 'Context (ctx):'
+        ParentColor = False
+      end
+      object edtCtx: TEdit
+        Left = 200
+        Height = 23
+        Top = 230
+        Width = 100
+        TabOrder = 10
+        Text = '8192'
+      end
+      object lblMaxNewTokens: TLabel
+        Left = 315
+        Height = 15
+        Top = 210
+        Width = 95
+        Caption = 'Max New Tokens:'
+        ParentColor = False
+      end
+      object cmbMaxNewTokens: TComboBox
+        Left = 315
+        Height = 23
+        Top = 230
+        Width = 165
+        ItemHeight = 15
+        Items.Strings = (
+          '8'
+          '16'
+          '32'
+        )
+        Style = csDropDownList
+        TabOrder = 11
+      end
+      object chkAutoStart: TCheckBox
+        Left = 10
+        Height = 19
+        Top = 262
+        Width = 230
+        Caption = 'Auto Start (Iniciar com o Windows)'
+        TabOrder = 12
+      end
+      object chkAutoOn: TCheckBox
+        Left = 250
+        Height = 19
+        Top = 262
+        Width = 230
+        Caption = 'Auto On (Auto reiniciar ChatServer)'
+        TabOrder = 13
       end
     end
     object tsLog: TTabSheet
