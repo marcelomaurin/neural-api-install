@@ -1,0 +1,200 @@
+[2026-07-24 11:58:56] === CHATSERVER STARTING ===
+[2026-07-24 11:58:56] Target log file: D:\projetos\neural-api\manager\log\chatserver.log
+[2026-07-24 11:58:56] >>> CONFIGURATION: CPU Mode (--cpu requested) <<<
+[2026-07-24 11:59:04] Tokenizer loaded in 8,1s.
+[2026-07-24 11:59:04] [int8 weights (default) - less RAM, faster on CPU and GPU; on --gpu the codes stay resident on the device; --fp32 opts out]
+[2026-07-24 11:59:04] [--max-fast-memory: concatenated weight cache kept - faster forward, more RAM, GPU compatible]
+[2026-07-24 11:59:04] Loading D:\projetos\neural-api\models\Qwen2.5-0.5B-Instruct ...
+[2026-07-24 11:59:14] Model loaded in 9,8s.
+[2026-07-24 11:59:14] [int8 KV cache (default with int8 weights) - ~1/4 the KV RAM, logits not bit-exact; --kv-fp32 opts out]
+[2026-07-24 11:59:14] Model: qwen2, 630139776 params, vocab 151936, context 8192, chat format qwen, int8 weights.
+[2026-07-24 11:59:14] [KV-cache reuse ON - only the new prompt tail is prefilled each turn]
+[2026-07-24 11:59:14] [serial layer loop (--serial) - fully single-threaded]
+[2026-07-24 11:59:14] [sampling: top-p 0,80, temperature 0,70, repetition-penalty 1,10 - flags > generation_config.json > fallback]
+[2026-07-24 11:59:14] >>> RUNNING MODE: CPU Serial (Host Processor - Single-threaded Safe Mode) <<<
+[2026-07-24 11:59:14] Serving Qwen2.5-0.5B-Instruct on http://127.0.0.1:8095/v1 (SSE streaming with "stream":true; Ctrl+C stops)
+[2026-07-24 12:00:24] [POST /v1/chat/completions] Received HTTP request (2340 bytes)
+[2026-07-24 12:00:24] [chat.completion 1] Request received (2 msgs, stream: False) -> system: "VocÃª Ã© um assistente de suporte especializado em classificar chamados. Sua tarefa Ã© responder estritamente "SIM" se a mensagem do usuÃ¡rio descrever um problema fÃ­sico, defeito ou necessidade de reparo em um equipamento, mÃ¡quina, hardware, aparelho ou mÃ³vel corporativo.  Responda... [truncated 501 chars]" | user: "Analise o e-mail abaixo:\n\nASSUNTO:\nRES: Reposição de Tonner\n\nCORPO:\nBom dia,\n\n \n\nSolicitação realizada.\n\n \n\nAtenciosamente,\n\n \n\n\n\n \n\nATENÇÃO:\n\nConsiderando as exigência legais da Lei nº 13.709/2018, Lei Geral de Proteção de Dados – LGPD, que estabelece como dado p... [truncated 1538 chars]"
+[2026-07-24 12:00:24] [chat.completion 1] Starting generation...
+[2026-07-24 12:00:24] [KV prefill] Processing 612 prompt tokens (pos 0 to 611)...
+[2026-07-24 12:00:25] === CHATSERVER STARTING ===
+[2026-07-24 12:00:25] Target log file: D:\projetos\neural-api\manager\log\chatserver.log
+[2026-07-24 12:00:25] >>> CONFIGURATION: CPU Mode (--cpu requested) <<<
+[2026-07-24 12:00:27] [KV prefill progress 50/612 tokens]
+[2026-07-24 12:00:29] [KV prefill progress 100/612 tokens]
+[2026-07-24 12:00:32] [KV prefill progress 150/612 tokens]
+[2026-07-24 12:00:33] Tokenizer loaded in 8,6s.
+[2026-07-24 12:00:33] [int8 weights (default) - less RAM, faster on CPU and GPU; on --gpu the codes stay resident on the device; --fp32 opts out]
+[2026-07-24 12:00:33] [--max-fast-memory: concatenated weight cache kept - faster forward, more RAM, GPU compatible]
+[2026-07-24 12:00:33] Loading D:\projetos\neural-api\models\Qwen2.5-0.5B-Instruct ...
+[2026-07-24 12:00:35] [KV prefill progress 200/612 tokens]
+[2026-07-24 12:00:37] [KV prefill progress 250/612 tokens]
+[2026-07-24 12:00:40] Model loaded in 6,6s.
+[2026-07-24 12:00:40] [int8 KV cache (default with int8 weights) - ~1/4 the KV RAM, logits not bit-exact; --kv-fp32 opts out]
+[2026-07-24 12:00:40] Model: qwen2, 630139776 params, vocab 151936, context 8192, chat format qwen, int8 weights.
+[2026-07-24 12:00:40] [KV-cache reuse ON - only the new prompt tail is prefilled each turn]
+[2026-07-24 12:00:40] [serial layer loop (--serial) - fully single-threaded]
+[2026-07-24 12:00:40] [sampling: top-p 0,80, temperature 0,70, repetition-penalty 1,10 - flags > generation_config.json > fallback]
+[2026-07-24 12:00:40] >>> RUNNING MODE: CPU Serial (Host Processor - Single-threaded Safe Mode) <<<
+[2026-07-24 12:00:40] Serving Qwen2.5-0.5B-Instruct on http://127.0.0.1:8095/v1 (SSE streaming with "stream":true; Ctrl+C stops)
+[2026-07-24 12:00:40] [SERVER ACCEPT LOOP EXCEPTION] ESocketError: Binding of socket failed: 8095
+[2026-07-24 12:00:40] === CHATSERVER STOPPING ===
+[2026-07-24 12:00:41] [KV prefill progress 300/612 tokens]
+[2026-07-24 12:00:44] [KV prefill progress 350/612 tokens]
+[2026-07-24 12:00:46] [KV prefill progress 400/612 tokens]
+[2026-07-24 12:00:49] [KV prefill progress 450/612 tokens]
+[2026-07-24 12:00:51] [KV prefill progress 500/612 tokens]
+[2026-07-24 12:00:54] [KV prefill progress 550/612 tokens]
+[2026-07-24 12:00:57] [KV prefill progress 600/612 tokens]
+[2026-07-24 12:00:57] [KV prefill completed (612 tokens)] Starting token generation loop...
+[2026-07-24 12:00:57] [decode start] Generating up to 150 tokens...
+[2026-07-24 12:00:58] [chat.completion 1] Finished: 613 prompt + 3 completion tokens, 33,4s, finish stop
+[2026-07-24 12:03:22] [POST /v1/chat/completions] Received HTTP request (2340 bytes)
+[2026-07-24 12:03:22] [chat.completion 2] Request received (2 msgs, stream: False) -> system: "VocÃª Ã© um assistente de suporte especializado em classificar chamados. Sua tarefa Ã© responder estritamente "SIM" se a mensagem do usuÃ¡rio descrever um problema fÃ­sico, defeito ou necessidade de reparo em um equipamento, mÃ¡quina, hardware, aparelho ou mÃ³vel corporativo.  Responda... [truncated 501 chars]" | user: "Analise o e-mail abaixo:\n\nASSUNTO:\nRES: Reposição de Tonner\n\nCORPO:\nBom dia,\n\n \n\nSolicitação realizada.\n\n \n\nAtenciosamente,\n\n \n\n\n\n \n\nATENÇÃO:\n\nConsiderando as exigência legais da Lei nº 13.709/2018, Lei Geral de Proteção de Dados – LGPD, que estabelece como dado p... [truncated 1538 chars]"
+[2026-07-24 12:03:22] [chat.completion 2] Starting generation...
+[2026-07-24 12:03:22] [decode start] Generating up to 150 tokens...
+[2026-07-24 12:03:23] [chat.completion 2] Finished: 613 prompt + 3 completion tokens, 0,3s, finish stop
+[2026-07-24 12:03:38] [POST /v1/chat/completions] Received HTTP request (1064 bytes)
+[2026-07-24 12:03:38] [chat.completion 3] Request received (2 msgs, stream: False) -> system: "VocÃª Ã© um assistente de suporte especializado em classificar chamados. Sua tarefa Ã© responder estritamente "SIM" se a mensagem do usuÃ¡rio descrever um problema fÃ­sico, defeito ou necessidade de reparo em um equipamento, mÃ¡quina, hardware, aparelho ou mÃ³vel corporativo.  Responda... [truncated 501 chars]" | user: "Analise o e-mail abaixo:\n\nASSUNTO:\nReposição de Tonner\n\nCORPO:\nPrezados, bom dia. \n\nsolicito por gentileza reposição do tonner da impressora, N. de série: U64187F2N659485 \n\nAt.te \n\n--\n\nEste e-mail é uma solicitação de manutenção de equipamento e que ainda não foi atendida.\n... [truncated 332 chars]"
+[2026-07-24 12:03:38] [chat.completion 3] Starting generation...
+[2026-07-24 12:03:38] [KV prefill] Processing 100 prompt tokens (pos 169 to 268)...
+[2026-07-24 12:03:40] === CHATSERVER STARTING ===
+[2026-07-24 12:03:40] Target log file: D:\projetos\neural-api\manager\log\chatserver.log
+[2026-07-24 12:03:40] >>> CONFIGURATION: CPU Mode (--cpu requested) <<<
+[2026-07-24 12:03:41] [KV prefill progress 50/100 tokens]
+[2026-07-24 12:03:43] [KV prefill completed (100 tokens)] Starting token generation loop...
+[2026-07-24 12:03:43] [decode start] Generating up to 150 tokens...
+[2026-07-24 12:03:43] [chat.completion 3] Finished: 270 prompt + 3 completion tokens, 5,0s, finish stop
+[2026-07-24 12:03:48] Tokenizer loaded in 7,6s.
+[2026-07-24 12:03:48] [int8 weights (default) - less RAM, faster on CPU and GPU; on --gpu the codes stay resident on the device; --fp32 opts out]
+[2026-07-24 12:03:48] [--max-fast-memory: concatenated weight cache kept - faster forward, more RAM, GPU compatible]
+[2026-07-24 12:03:48] Loading D:\projetos\neural-api\models\Qwen2.5-0.5B-Instruct ...
+[2026-07-24 12:03:51] [POST /v1/chat/completions] Received HTTP request (3179 bytes)
+[2026-07-24 12:03:51] [chat.completion 4] Request received (2 msgs, stream: False) -> system: "VocÃª Ã© um assistente de suporte especializado em classificar chamados. Sua tarefa Ã© responder estritamente "SIM" se a mensagem do usuÃ¡rio descrever um problema fÃ­sico, defeito ou necessidade de reparo em um equipamento, mÃ¡quina, hardware, aparelho ou mÃ³vel corporativo.  Responda... [truncated 501 chars]" | user: "Analise o e-mail abaixo:\n\nASSUNTO:\nRe: SOLICITAÇÃO DE REPOSIÇÃO DE  NOBREAK - PRIORIDADE\n\nCORPO:\nBom dia, \n\naberto chamado na Coderp para troca. \n\n\n\nAtenciosamente, \n\n\n\n\n\n\n\n\n\n\n\n\nATENÇÃO: \n\nConsiderando as exigência legais da Lei nº 13.709/2018, Lei Geral de Proteç... [truncated 2351 chars]"
+[2026-07-24 12:03:51] [chat.completion 4] Starting generation...
+[2026-07-24 12:03:51] [KV prefill] Processing 691 prompt tokens (pos 170 to 860)...
+[2026-07-24 12:03:54] Model loaded in 6,0s.
+[2026-07-24 12:03:54] [int8 KV cache (default with int8 weights) - ~1/4 the KV RAM, logits not bit-exact; --kv-fp32 opts out]
+[2026-07-24 12:03:54] Model: qwen2, 630139776 params, vocab 151936, context 8192, chat format qwen, int8 weights.
+[2026-07-24 12:03:54] [KV-cache reuse ON - only the new prompt tail is prefilled each turn]
+[2026-07-24 12:03:54] [serial layer loop (--serial) - fully single-threaded]
+[2026-07-24 12:03:54] [sampling: top-p 0,80, temperature 0,70, repetition-penalty 1,10 - flags > generation_config.json > fallback]
+[2026-07-24 12:03:54] >>> RUNNING MODE: CPU Serial (Host Processor - Single-threaded Safe Mode) <<<
+[2026-07-24 12:03:54] Serving Qwen2.5-0.5B-Instruct on http://127.0.0.1:8095/v1 (SSE streaming with "stream":true; Ctrl+C stops)
+[2026-07-24 12:03:54] [SERVER ACCEPT LOOP EXCEPTION] ESocketError: Binding of socket failed: 8095
+[2026-07-24 12:03:54] === CHATSERVER STOPPING ===
+[2026-07-24 12:03:54] [KV prefill progress 50/691 tokens]
+[2026-07-24 12:03:57] [KV prefill progress 100/691 tokens]
+[2026-07-24 12:03:59] [KV prefill progress 150/691 tokens]
+[2026-07-24 12:04:01] [KV prefill progress 200/691 tokens]
+[2026-07-24 12:04:04] [KV prefill progress 250/691 tokens]
+[2026-07-24 12:04:06] [KV prefill progress 300/691 tokens]
+[2026-07-24 12:04:09] [KV prefill progress 350/691 tokens]
+[2026-07-24 12:04:11] [KV prefill progress 400/691 tokens]
+[2026-07-24 12:04:14] [KV prefill progress 450/691 tokens]
+[2026-07-24 12:04:17] [KV prefill progress 500/691 tokens]
+[2026-07-24 12:04:19] [KV prefill progress 550/691 tokens]
+[2026-07-24 12:04:22] [KV prefill progress 600/691 tokens]
+[2026-07-24 12:04:24] [KV prefill progress 650/691 tokens]
+[2026-07-24 12:04:27] [KV prefill completed (691 tokens)] Starting token generation loop...
+[2026-07-24 12:04:27] [decode start] Generating up to 150 tokens...
+[2026-07-24 12:04:27] [chat.completion 4] Finished: 862 prompt + 2 completion tokens, 36,0s, finish stop
+[2026-07-24 12:24:13] [POST /v1/chat/completions] Received HTTP request (2340 bytes)
+[2026-07-24 12:24:13] [chat.completion 5] Request received (2 msgs, stream: False) -> system: "VocÃª Ã© um assistente de suporte especializado em classificar chamados. Sua tarefa Ã© responder estritamente "SIM" se a mensagem do usuÃ¡rio descrever um problema fÃ­sico, defeito ou necessidade de reparo em um equipamento, mÃ¡quina, hardware, aparelho ou mÃ³vel corporativo.  Responda... [truncated 501 chars]" | user: "Analise o e-mail abaixo:\n\nASSUNTO:\nRES: Reposição de Tonner\n\nCORPO:\nBom dia,\n\n \n\nSolicitação realizada.\n\n \n\nAtenciosamente,\n\n \n\n\n\n \n\nATENÇÃO:\n\nConsiderando as exigência legais da Lei nº 13.709/2018, Lei Geral de Proteção de Dados – LGPD, que estabelece como dado p... [truncated 1538 chars]"
+[2026-07-24 12:24:13] [chat.completion 5] Starting generation...
+[2026-07-24 12:24:13] [KV prefill] Processing 443 prompt tokens (pos 169 to 611)...
+[2026-07-24 12:24:14] === CHATSERVER STARTING ===
+[2026-07-24 12:24:14] Target log file: D:\projetos\neural-api\manager\log\chatserver.log
+[2026-07-24 12:24:14] >>> CONFIGURATION: CPU Mode (--cpu requested) <<<
+[2026-07-24 12:24:16] [KV prefill progress 50/443 tokens]
+[2026-07-24 12:24:19] [KV prefill progress 100/443 tokens]
+[2026-07-24 12:24:22] [KV prefill progress 150/443 tokens]
+[2026-07-24 12:24:23] Tokenizer loaded in 9,1s.
+[2026-07-24 12:24:23] [int8 weights (default) - less RAM, faster on CPU and GPU; on --gpu the codes stay resident on the device; --fp32 opts out]
+[2026-07-24 12:24:23] [--max-fast-memory: concatenated weight cache kept - faster forward, more RAM, GPU compatible]
+[2026-07-24 12:24:23] Loading D:\projetos\neural-api\models\Qwen2.5-0.5B-Instruct ...
+[2026-07-24 12:24:25] [KV prefill progress 200/443 tokens]
+[2026-07-24 12:24:28] [KV prefill progress 250/443 tokens]
+[2026-07-24 12:24:31] [KV prefill progress 300/443 tokens]
+[2026-07-24 12:24:34] [KV prefill progress 350/443 tokens]
+[2026-07-24 12:24:37] [KV prefill progress 400/443 tokens]
+[2026-07-24 12:24:38] Model loaded in 15,1s.
+[2026-07-24 12:24:38] [int8 KV cache (default with int8 weights) - ~1/4 the KV RAM, logits not bit-exact; --kv-fp32 opts out]
+[2026-07-24 12:24:38] Model: qwen2, 630139776 params, vocab 151936, context 8192, chat format qwen, int8 weights.
+[2026-07-24 12:24:38] [KV-cache reuse ON - only the new prompt tail is prefilled each turn]
+[2026-07-24 12:24:38] [serial layer loop (--serial) - fully single-threaded]
+[2026-07-24 12:24:38] [sampling: top-p 0,80, temperature 0,70, repetition-penalty 1,10 - flags > generation_config.json > fallback]
+[2026-07-24 12:24:38] >>> RUNNING MODE: CPU Serial (Host Processor - Single-threaded Safe Mode) <<<
+[2026-07-24 12:24:38] Serving Qwen2.5-0.5B-Instruct on http://127.0.0.1:8095/v1 (SSE streaming with "stream":true; Ctrl+C stops)
+[2026-07-24 12:24:38] [SERVER ACCEPT LOOP EXCEPTION] ESocketError: Binding of socket failed: 8095
+[2026-07-24 12:24:38] === CHATSERVER STOPPING ===
+[2026-07-24 12:24:39] [KV prefill completed (443 tokens)] Starting token generation loop...
+[2026-07-24 12:24:39] [decode start] Generating up to 150 tokens...
+[2026-07-24 12:24:40] [chat.completion 5] Finished: 613 prompt + 3 completion tokens, 26,3s, finish stop
+[2026-07-24 12:25:39] [POST /v1/chat/completions] Received HTTP request (2340 bytes)
+[2026-07-24 12:25:39] [chat.completion 6] Request received (2 msgs, stream: False) -> system: "VocÃª Ã© um assistente de suporte especializado em classificar chamados. Sua tarefa Ã© responder estritamente "SIM" se a mensagem do usuÃ¡rio descrever um problema fÃ­sico, defeito ou necessidade de reparo em um equipamento, mÃ¡quina, hardware, aparelho ou mÃ³vel corporativo.  Responda... [truncated 501 chars]" | user: "Analise o e-mail abaixo:\n\nASSUNTO:\nRES: Reposição de Tonner\n\nCORPO:\nBom dia,\n\n \n\nSolicitação realizada.\n\n \n\nAtenciosamente,\n\n \n\n\n\n \n\nATENÇÃO:\n\nConsiderando as exigência legais da Lei nº 13.709/2018, Lei Geral de Proteção de Dados – LGPD, que estabelece como dado p... [truncated 1538 chars]"
+[2026-07-24 12:25:39] [chat.completion 6] Starting generation...
+[2026-07-24 12:25:39] [decode start] Generating up to 150 tokens...
+[2026-07-24 12:25:39] [chat.completion 6] Finished: 613 prompt + 3 completion tokens, 0,3s, finish stop
+[2026-07-24 12:25:48] [POST /v1/chat/completions] Received HTTP request (1064 bytes)
+[2026-07-24 12:25:48] [chat.completion 7] Request received (2 msgs, stream: False) -> system: "VocÃª Ã© um assistente de suporte especializado em classificar chamados. Sua tarefa Ã© responder estritamente "SIM" se a mensagem do usuÃ¡rio descrever um problema fÃ­sico, defeito ou necessidade de reparo em um equipamento, mÃ¡quina, hardware, aparelho ou mÃ³vel corporativo.  Responda... [truncated 501 chars]" | user: "Analise o e-mail abaixo:\n\nASSUNTO:\nReposição de Tonner\n\nCORPO:\nPrezados, bom dia. \n\nsolicito por gentileza reposição do tonner da impressora, N. de série: U64187F2N659485 \n\nAt.te \n\n--\n\nEste e-mail é uma solicitação de manutenção de equipamento e que ainda não foi atendida.\n... [truncated 332 chars]"
+[2026-07-24 12:25:48] [chat.completion 7] Starting generation...
+[2026-07-24 12:25:48] [KV prefill] Processing 100 prompt tokens (pos 169 to 268)...
+[2026-07-24 12:25:49] === CHATSERVER STARTING ===
+[2026-07-24 12:25:49] Target log file: D:\projetos\neural-api\manager\log\chatserver.log
+[2026-07-24 12:25:49] >>> CONFIGURATION: CPU Mode (--cpu requested) <<<
+[2026-07-24 12:25:51] [KV prefill progress 50/100 tokens]
+[2026-07-24 12:25:54] [KV prefill completed (100 tokens)] Starting token generation loop...
+[2026-07-24 12:25:54] [decode start] Generating up to 150 tokens...
+[2026-07-24 12:25:54] [chat.completion 7] Finished: 270 prompt + 3 completion tokens, 5,7s, finish stop
+[2026-07-24 12:25:57] Tokenizer loaded in 8,5s.
+[2026-07-24 12:25:57] [int8 weights (default) - less RAM, faster on CPU and GPU; on --gpu the codes stay resident on the device; --fp32 opts out]
+[2026-07-24 12:25:57] [--max-fast-memory: concatenated weight cache kept - faster forward, more RAM, GPU compatible]
+[2026-07-24 12:25:57] Loading D:\projetos\neural-api\models\Qwen2.5-0.5B-Instruct ...
+[2026-07-24 12:26:03] Model loaded in 6,0s.
+[2026-07-24 12:26:03] [int8 KV cache (default with int8 weights) - ~1/4 the KV RAM, logits not bit-exact; --kv-fp32 opts out]
+[2026-07-24 12:26:03] Model: qwen2, 630139776 params, vocab 151936, context 8192, chat format qwen, int8 weights.
+[2026-07-24 12:26:03] [KV-cache reuse ON - only the new prompt tail is prefilled each turn]
+[2026-07-24 12:26:03] [serial layer loop (--serial) - fully single-threaded]
+[2026-07-24 12:26:03] [sampling: top-p 0,80, temperature 0,70, repetition-penalty 1,10 - flags > generation_config.json > fallback]
+[2026-07-24 12:26:03] >>> RUNNING MODE: CPU Serial (Host Processor - Single-threaded Safe Mode) <<<
+[2026-07-24 12:26:03] Serving Qwen2.5-0.5B-Instruct on http://127.0.0.1:8095/v1 (SSE streaming with "stream":true; Ctrl+C stops)
+[2026-07-24 12:26:03] [SERVER ACCEPT LOOP EXCEPTION] ESocketError: Binding of socket failed: 8095
+[2026-07-24 12:26:03] === CHATSERVER STOPPING ===
+[2026-07-24 12:26:07] [POST /v1/chat/completions] Received HTTP request (3179 bytes)
+[2026-07-24 12:26:07] [chat.completion 8] Request received (2 msgs, stream: False) -> system: "VocÃª Ã© um assistente de suporte especializado em classificar chamados. Sua tarefa Ã© responder estritamente "SIM" se a mensagem do usuÃ¡rio descrever um problema fÃ­sico, defeito ou necessidade de reparo em um equipamento, mÃ¡quina, hardware, aparelho ou mÃ³vel corporativo.  Responda... [truncated 501 chars]" | user: "Analise o e-mail abaixo:\n\nASSUNTO:\nRe: SOLICITAÇÃO DE REPOSIÇÃO DE  NOBREAK - PRIORIDADE\n\nCORPO:\nBom dia, \n\naberto chamado na Coderp para troca. \n\n\n\nAtenciosamente, \n\n\n\n\n\n\n\n\n\n\n\n\nATENÇÃO: \n\nConsiderando as exigência legais da Lei nº 13.709/2018, Lei Geral de Proteç... [truncated 2351 chars]"
+[2026-07-24 12:26:07] [chat.completion 8] Starting generation...
+[2026-07-24 12:26:07] [KV prefill] Processing 691 prompt tokens (pos 170 to 860)...
+[2026-07-24 12:26:10] [KV prefill progress 50/691 tokens]
+[2026-07-24 12:26:12] [KV prefill progress 100/691 tokens]
+[2026-07-24 12:26:15] [KV prefill progress 150/691 tokens]
+[2026-07-24 12:26:17] [KV prefill progress 200/691 tokens]
+[2026-07-24 12:26:20] [KV prefill progress 250/691 tokens]
+[2026-07-24 12:26:23] [KV prefill progress 300/691 tokens]
+[2026-07-24 12:26:26] [KV prefill progress 350/691 tokens]
+[2026-07-24 12:26:29] [KV prefill progress 400/691 tokens]
+[2026-07-24 12:26:31] [KV prefill progress 450/691 tokens]
+[2026-07-24 12:26:34] [KV prefill progress 500/691 tokens]
+[2026-07-24 12:26:37] [KV prefill progress 550/691 tokens]
+[2026-07-24 12:26:40] [KV prefill progress 600/691 tokens]
+[2026-07-24 12:26:43] [KV prefill progress 650/691 tokens]
+[2026-07-24 12:26:46] [KV prefill completed (691 tokens)] Starting token generation loop...
+[2026-07-24 12:26:46] [decode start] Generating up to 150 tokens...
+[2026-07-24 12:26:46] [chat.completion 8] Finished: 862 prompt + 2 completion tokens, 39,2s, finish stop
+[2026-07-24 13:13:25] === CHATSERVER STARTING ===
+[2026-07-24 13:13:25] Target log file: D:\projetos\neural-api\manager\log\chatserver.log
+[2026-07-24 13:13:25] >>> CONFIGURATION: CPU Mode (--cpu requested) <<<
+[2026-07-24 13:13:33] Tokenizer loaded in 8,2s.
+[2026-07-24 13:13:33] [int8 weights (default) - less RAM, faster on CPU and GPU; on --gpu the codes stay resident on the device; --fp32 opts out]
+[2026-07-24 13:13:33] [--max-fast-memory: concatenated weight cache kept - faster forward, more RAM, GPU compatible]
+[2026-07-24 13:13:33] Loading D:\projetos\neural-api\models\Qwen2.5-0.5B-Instruct ...
+[2026-07-24 13:13:39] Model loaded in 6,1s.
+[2026-07-24 13:13:39] [int8 KV cache (default with int8 weights) - ~1/4 the KV RAM, logits not bit-exact; --kv-fp32 opts out]
+[2026-07-24 13:13:39] Model: qwen2, 630139776 params, vocab 151936, context 8192, chat format qwen, int8 weights.
+[2026-07-24 13:13:39] [KV-cache reuse ON - only the new prompt tail is prefilled each turn]
+[2026-07-24 13:13:39] [serial layer loop (--serial) - fully single-threaded]
+[2026-07-24 13:13:39] [sampling: top-p 0,80, temperature 0,70, repetition-penalty 1,10 - flags > generation_config.json > fallback]
+[2026-07-24 13:13:39] >>> RUNNING MODE: CPU Serial (Host Processor - Single-threaded Safe Mode) <<<
+[2026-07-24 13:13:39] Serving Qwen2.5-0.5B-Instruct on http://127.0.0.1:8095/v1 (SSE streaming with "stream":true; Ctrl+C stops)
+[2026-07-24 13:13:39] [SERVER ACCEPT LOOP EXCEPTION] ESocketError: Binding of socket failed: 8095
+[2026-07-24 13:13:39] === CHATSERVER STOPPING ===

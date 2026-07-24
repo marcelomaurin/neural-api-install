@@ -329,6 +329,9 @@ object frmManager: TfrmManager
     object menuSeparator2: TMenuItem
       Caption = '-'
     end
+    object menuConfig: TMenuItem
+      OnClick = menuConfigClick
+    end
     object menuLog: TMenuItem
       OnClick = menuLogClick
     end

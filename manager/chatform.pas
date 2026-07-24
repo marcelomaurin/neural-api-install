@@ -6,10 +6,9 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  LCLType, chatgpt;
+  LCLType, chatgpt, aibase;
 
 type
-
   { TfrmChat }
 
   TfrmChat = class(TForm)
@@ -18,18 +17,21 @@ type
     pnlRightButtons: TPanel;
     memQuestion: TMemo;
     btnSend: TButton;
+    btnStop: TButton;
     btnAttach: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure btnSendClick(Sender: TObject);
+    procedure btnStopClick(Sender: TObject);
     procedure btnAttachClick(Sender: TObject);
     procedure memQuestionKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormShow(Sender: TObject);
   private
-    FChatGPT: TCHATGPT;
     FPort: string;
     FModel: string;
     FLanguageIdx: Integer;
+    procedure SetUIState(ABusy: Boolean);
     procedure UpdateUIStrings;
   public
     procedure SetConfig(const APort, AModel: string; ALangIdx: Integer);
@@ -47,7 +49,6 @@ implementation
 procedure TfrmChat.FormCreate(Sender: TObject);
 begin
   Self.DoubleBuffered := True;
-  FChatGPT := TCHATGPT.Create(Self);
   FPort := '8095';
   FModel := '';
   FLanguageIdx := 1;
@@ -56,7 +57,11 @@ end;
 
 procedure TfrmChat.FormDestroy(Sender: TObject);
 begin
-  // FChatGPT é destruído automaticamente pois Self é o Owner
+end;
+
+procedure TfrmChat.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  SetUIState(False);
 end;
 
 procedure TfrmChat.SetConfig(const APort, AModel: string; ALangIdx: Integer);
@@ -72,9 +77,24 @@ begin
   memQuestion.SetFocus;
 end;
 
+procedure TfrmChat.SetUIState(ABusy: Boolean);
+begin
+  btnSend.Enabled := not ABusy;
+  btnStop.Enabled := False;
+  btnAttach.Enabled := not ABusy;
+  memQuestion.ReadOnly := ABusy;
+  if ABusy then
+    Screen.Cursor := crHourGlass
+  else
+    Screen.Cursor := crDefault;
+end;
+
 procedure TfrmChat.btnSendClick(Sender: TObject);
 var
   QText: string;
+  FChatGPT: TCHATGPT;
+  Success: Boolean;
+  ResponseText: string;
 begin
   QText := Trim(memQuestion.Text);
   if QText = '' then Exit;
@@ -83,27 +103,40 @@ begin
   memChat.Lines.Add(QText);
   memQuestion.Clear;
 
-  // Configura o componente de Chat
-  FChatGPT.Provider := AIP_LOCAL;
-  FChatGPT.LocalIP := 'http://127.0.0.1:' + FPort;
-  FChatGPT.CustomModel := FModel;
-  FChatGPT.TOKEN := 'local'; // dummy key for local API auth
+  SetUIState(True);
+  Application.ProcessMessages;
 
-  Screen.Cursor := crHourGlass;
-  btnSend.Enabled := False;
-  btnAttach.Enabled := False;
+  FChatGPT := TCHATGPT.Create(nil);
   try
-    if FChatGPT.SendQuestion(QText) then
-      memChat.Lines.Add('>>> IA: ' + FChatGPT.Response)
+    FChatGPT.Provider := AIP_LOCAL;
+    FChatGPT.LocalIP := 'http://127.0.0.1:' + FPort;
+    FChatGPT.CustomModel := FModel;
+    FChatGPT.TOKEN := 'local'; // chave dummy para API local
+
+    Success := FChatGPT.SendQuestion(QText);
+    ResponseText := FChatGPT.Response;
+
+    if Success then
+      memChat.Lines.Add('>>> IA: ' + ResponseText)
     else
-      memChat.Lines.Add('>>> Erro: ' + FChatGPT.Response);
+      memChat.Lines.Add('>>> Erro: ' + ResponseText);
     memChat.Lines.Add('');
-  finally
-    btnSend.Enabled := True;
-    btnAttach.Enabled := True;
-    Screen.Cursor := crDefault;
-    memQuestion.SetFocus;
+  except
+    on E: Exception do
+    begin
+      memChat.Lines.Add('>>> Erro: ' + E.Message);
+      memChat.Lines.Add('');
+    end;
   end;
+  FChatGPT.Free;
+
+  SetUIState(False);
+  memQuestion.SetFocus;
+end;
+
+procedure TfrmChat.btnStopClick(Sender: TObject);
+begin
+  // No modo síncrono não há requisição em segundo plano para cancelar
 end;
 
 procedure TfrmChat.btnAttachClick(Sender: TObject);
@@ -172,54 +205,63 @@ begin
       begin
         Caption := 'Local AI Chat';
         btnSend.Caption := 'Send';
+        btnStop.Caption := 'Stop';
         btnAttach.Caption := 'Attach';
       end;
     1: { Portugues }
       begin
         Caption := 'Chat de IA Local';
         btnSend.Caption := 'Enviar';
+        btnStop.Caption := 'Parar';
         btnAttach.Caption := 'Anexar';
       end;
     2: { Francais }
       begin
         Caption := 'Chat IA Local';
         btnSend.Caption := 'Envoyer';
+        btnStop.Caption := 'Arrêter';
         btnAttach.Caption := 'Joindre';
       end;
     3: { Deutsch }
       begin
         Caption := 'Lokaler KI-Chat';
         btnSend.Caption := 'Senden';
+        btnStop.Caption := 'Stopp';
         btnAttach.Caption := 'Anhängen';
       end;
     4: { Espanol }
       begin
         Caption := 'Chat de IA Local';
         btnSend.Caption := 'Enviar';
+        btnStop.Caption := 'Detener';
         btnAttach.Caption := 'Adjuntar';
       end;
     5: { Arabic }
       begin
         Caption := 'دردشة ذكاء اصطناعي محلي';
         btnSend.Caption := 'إرسال';
+        btnStop.Caption := 'إيقاف';
         btnAttach.Caption := 'إرفاق';
       end;
     6: { Chinese }
       begin
         Caption := '本地 AI 聊天';
         btnSend.Caption := '发送';
+        btnStop.Caption := '停止';
         btnAttach.Caption := '附件';
       end;
     7: { Japanese }
       begin
         Caption := 'ローカルAIチャット';
         btnSend.Caption := '送信';
+        btnStop.Caption := '停止';
         btnAttach.Caption := '添付';
       end;
     8: { Russian }
       begin
         Caption := 'Локальный ИИ Чат';
         btnSend.Caption := 'Отправить';
+        btnStop.Caption := 'Стоп';
         btnAttach.Caption := 'Прикрепить';
       end;
   end;

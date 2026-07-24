@@ -35,6 +35,7 @@ type
     MaxNewTokensLabel: string;
     AutoStartLabel: string;
     AutoOnLabel: string;
+    GpuLabel: string;
     BtnSetup: string;
   end;
 
@@ -55,6 +56,7 @@ type
     cmbMaxNewTokens: TComboBox;
     chkAutoStart: TCheckBox;
     chkAutoOn: TCheckBox;
+    chkUseGpu: TCheckBox;
     edtProjectPath: TEdit;
     edtServerPath: TEdit;
     edtModelsPath: TEdit;
@@ -84,6 +86,7 @@ type
     menuChat: TMenuItem;
     menuBenchmark: TMenuItem;
     menuSeparator2: TMenuItem;
+    menuConfig: TMenuItem;
     menuLog: TMenuItem;
     menuLanguage: TMenuItem;
     menuSeparator3: TMenuItem;
@@ -106,6 +109,7 @@ type
     procedure menuStopClick(Sender: TObject);
     procedure menuChatClick(Sender: TObject);
     procedure menuBenchmarkClick(Sender: TObject);
+    procedure menuConfigClick(Sender: TObject);
     procedure menuLogClick(Sender: TObject);
     procedure menuExitClick(Sender: TObject);
     procedure timerStatusTimer(Sender: TObject);
@@ -119,6 +123,7 @@ type
     FMaxNewTokens: string;
     FAutoStart: Boolean;
     FAutoOn: Boolean;
+    FUseGpu: Boolean;
     FLastStartAttempt: TDateTime;
     FSelectedModel: string;
     FLanguageIdx: Integer;
@@ -175,6 +180,7 @@ const
       MaxNewTokensLabel: 'Max New Tokens:';
       AutoStartLabel: 'Auto Start (Windows Startup)';
       AutoOnLabel: 'Auto On (Auto Restart Server)';
+      GpuLabel: 'Use GPU (OpenCL)';
       BtnSetup: 'Setup'
     ),
     // 1: Português
@@ -204,6 +210,7 @@ const
       MaxNewTokensLabel: 'Max Novos Tokens:';
       AutoStartLabel: 'Auto Start (Iniciar com o Windows)';
       AutoOnLabel: 'Auto On (Auto reiniciar ChatServer)';
+      GpuLabel: 'Usar GPU (OpenCL)';
       BtnSetup: 'Setup'
     ),
     // 2: Français
@@ -233,6 +240,7 @@ const
       MaxNewTokensLabel: 'Max Nouveaux Tokens :';
       AutoStartLabel: 'Auto Start (Démarrer avec Windows)';
       AutoOnLabel: 'Auto On (Redémarrer serveur auto)';
+      GpuLabel: 'Utiliser GPU (OpenCL)';
       BtnSetup: 'Setup'
     ),
     // 3: Deutsch
@@ -262,6 +270,7 @@ const
       MaxNewTokensLabel: 'Max Neue Token:';
       AutoStartLabel: 'Auto Start (Mit Windows starten)';
       AutoOnLabel: 'Auto On (Server auto neustarten)';
+      GpuLabel: 'GPU (OpenCL) verwenden';
       BtnSetup: 'Setup'
     ),
     // 4: Español
@@ -291,6 +300,7 @@ const
       MaxNewTokensLabel: 'Máx Nuevos Tokens:';
       AutoStartLabel: 'Auto Start (Iniciar con Windows)';
       AutoOnLabel: 'Auto On (Reiniciar servidor auto)';
+      GpuLabel: 'Usar GPU (OpenCL)';
       BtnSetup: 'Setup'
     ),
     // 5: Arabic
@@ -320,6 +330,7 @@ const
       MaxNewTokensLabel: 'الحد الأقصى للرموز:';
       AutoStartLabel: 'بدء تلقائي (مع ويندوز)';
       AutoOnLabel: 'تشغيل تلقائي (إعادة تشغيل الخادم)';
+      GpuLabel: 'استخدام وحدة معالجة الرسومات';
       BtnSetup: 'إعداد'
     ),
     // 6: Chinese
@@ -349,6 +360,7 @@ const
       MaxNewTokensLabel: '最大新 Token:';
       AutoStartLabel: '开机自启 (随 Windows 启动)';
       AutoOnLabel: '自动开机 (自动重启 ChatServer)';
+      GpuLabel: '使用 GPU (OpenCL)';
       BtnSetup: '设置'
     ),
     // 7: Japanese
@@ -378,6 +390,7 @@ const
       MaxNewTokensLabel: '最大新規トークン:';
       AutoStartLabel: '自動起動 (Windows 起動時)';
       AutoOnLabel: '自動 On (サーバー自動再起動)';
+      GpuLabel: 'GPU (OpenCL) を使用';
       BtnSetup: 'セットアップ'
     ),
     // 8: Russian
@@ -407,6 +420,7 @@ const
       MaxNewTokensLabel: 'Макс. новых токенов:';
       AutoStartLabel: 'Автозапуск (с Windows)';
       AutoOnLabel: 'Авто On (Автоперезапуск)';
+      GpuLabel: 'Использовать GPU (OpenCL)';
       BtnSetup: 'Установка'
     )
   );
@@ -446,10 +460,26 @@ end;
 
 procedure TfrmManager.LogEvent(const AMsg: string);
 var
-  TimestampedMsg: string;
+  TimestampedMsg, LogDir, LogFilePath: string;
+  F: TextFile;
 begin
   TimestampedMsg := FormatDateTime('yyyy-mm-dd hh:nn:ss', Now) + ' - ' + AMsg;
   memLog.Lines.Add(TimestampedMsg);
+
+  LogDir := IncludeTrailingPathDelimiter(FProjectPath) + 'manager' + PathDelim + 'log';
+  try
+    ForceDirectories(LogDir);
+    LogFilePath := IncludeTrailingPathDelimiter(LogDir) + 'manager.log';
+    AssignFile(F, LogFilePath);
+    if FileExists(LogFilePath) then
+      Append(F)
+    else
+      Rewrite(F);
+    WriteLn(F, TimestampedMsg);
+    CloseFile(F);
+  except
+    // Silent catch so logging failure does not interrupt UI operations
+  end;
 end;
 
 function TfrmManager.GetConfigPath: string;
@@ -580,6 +610,7 @@ begin
     FMaxNewTokens := Ini.ReadString('Settings', 'MaxNewTokens', '32');
     FAutoStart := Ini.ReadBool('Settings', 'AutoStart', False);
     FAutoOn := Ini.ReadBool('Settings', 'AutoOn', False);
+    FUseGpu := Ini.ReadBool('Settings', 'UseGpu', False);
     FSelectedModel := Ini.ReadString('Settings', 'Model', 'Qwen2.5-0.5B-Instruct');
     FLanguageIdx := Ini.ReadInteger('Settings', 'Language', 1);
   finally
@@ -601,6 +632,7 @@ begin
     Ini.WriteString('Settings', 'MaxNewTokens', FMaxNewTokens);
     Ini.WriteBool('Settings', 'AutoStart', FAutoStart);
     Ini.WriteBool('Settings', 'AutoOn', FAutoOn);
+    Ini.WriteBool('Settings', 'UseGpu', FUseGpu);
     Ini.WriteString('Settings', 'Model', FSelectedModel);
     Ini.WriteInteger('Settings', 'Language', FLanguageIdx);
   finally
@@ -665,6 +697,7 @@ begin
   lblMaxNewTokens.Caption := Trans.MaxNewTokensLabel;
   chkAutoStart.Caption := Trans.AutoStartLabel;
   chkAutoOn.Caption := Trans.AutoOnLabel;
+  chkUseGpu.Caption := Trans.GpuLabel;
   btnSetup.Caption := Trans.BtnSetup;
   btnSave.Caption := Trans.BtnSave;
   btnCancelForm.Caption := Trans.BtnCancel;
@@ -684,6 +717,7 @@ begin
   menuStop.Caption := Trans.StopMenu;
   menuChat.Caption := Trans.BtnChat;
   menuBenchmark.Caption := Trans.BtnBenchmark;
+  menuConfig.Caption := Trans.TabConfig;
   menuLog.Caption := Trans.LogMenu;
   menuLanguage.Caption := Trans.LanguageMenu;
   menuExit.Caption := Trans.ExitMenu;
@@ -786,6 +820,10 @@ begin
   LogEvent('Porta selecionada: ' + FPort);
   LogEvent('Contexto (ctx): ' + FCtx);
   LogEvent('Max New Tokens: ' + FMaxNewTokens);
+  if FUseGpu then
+    LogEvent('>>> HARDWARE SELECIONADO: GPU (OpenCL Aceleração de Hardware) <<<')
+  else
+    LogEvent('>>> HARDWARE SELECIONADO: CPU (Processador do Host - Sem GPU) <<<');
 
   FServerProcess := TProcess.Create(nil);
   FServerProcess.Executable := ServerExePath;
@@ -798,6 +836,15 @@ begin
   FServerProcess.Parameters.Add('--stats');
   FServerProcess.Parameters.Add('--port');
   FServerProcess.Parameters.Add(FPort);
+  if FUseGpu then
+    FServerProcess.Parameters.Add('--gpu')
+  else
+  begin
+    FServerProcess.Parameters.Add('--cpu');
+    FServerProcess.Parameters.Add('--serial');
+  end;
+  FServerProcess.Parameters.Add('--log-file');
+  FServerProcess.Parameters.Add(IncludeTrailingPathDelimiter(FProjectPath) + 'manager' + PathDelim + 'log' + PathDelim + 'chatserver.log');
   FServerProcess.Options := [poNoConsole];
   FServerProcess.ShowWindow := swoNone;
 
@@ -919,6 +966,7 @@ begin
     cmbMaxNewTokens.ItemIndex := 2;
   chkAutoStart.Checked := FAutoStart;
   chkAutoOn.Checked := FAutoOn;
+  chkUseGpu.Checked := FUseGpu;
   UpdateModelsCombo;
   cmbLanguage.ItemIndex := FLanguageIdx;
   UpdateUIStrings;
@@ -974,6 +1022,7 @@ begin
     FMaxNewTokens := '32';
   FAutoStart := chkAutoStart.Checked;
   FAutoOn := chkAutoOn.Checked;
+  FUseGpu := chkUseGpu.Checked;
   if cmbModel.ItemIndex >= 0 then
     FSelectedModel := cmbModel.Items[cmbModel.ItemIndex];
   FLanguageIdx := cmbLanguage.ItemIndex;
@@ -1015,6 +1064,14 @@ end;
 procedure TfrmManager.menuStopClick(Sender: TObject);
 begin
   StopServer;
+end;
+
+procedure TfrmManager.menuConfigClick(Sender: TObject);
+begin
+  Show;
+  WindowState := wsNormal;
+  pgcMain.ActivePage := tsConfig;
+  BringToFront;
 end;
 
 procedure TfrmManager.menuLogClick(Sender: TObject);

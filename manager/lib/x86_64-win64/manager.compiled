@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="C:\lazarus\fpc\3.2.2\bin\i386-win32\fpc.exe" Date="1533566547"/>
+  <Params Value="-Twin64 -Px86_64 -MObjFPC -Scghi -O1 -Xs -WG -l -vewnhibq -FiD:\projetos\neural-api\manager\lib\x86_64-win64 -FuD:\projetos\neural-api\manager\ &quot;-FuD:\projetos\maurinsoft\CHATGPT\pacote\AI Hardware&quot; -FuD:\projetos\maurinsoft\CHATGPT\pacote\AI -FuC:\lazarus\lcl\units\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64 -FuC:\lazarus\components\freetype\lib\x86_64-win64 -FuC:\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\lazarus\packager\units\x86_64-win64 -FUD:\projetos\neural-api\manager\lib\x86_64-win64\ -FED:\projetos\neural-api\manager\ -oD:\projetos\neural-api\manager\manager.exe -dLCL -dLCLwin32 manager.lpr"/>
+</CONFIG>
