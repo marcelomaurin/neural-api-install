@@ -198,3 +198,20 @@
 [2026-07-24 13:13:39] Serving Qwen2.5-0.5B-Instruct on http://127.0.0.1:8095/v1 (SSE streaming with "stream":true; Ctrl+C stops)
 [2026-07-24 13:13:39] [SERVER ACCEPT LOOP EXCEPTION] ESocketError: Binding of socket failed: 8095
 [2026-07-24 13:13:39] === CHATSERVER STOPPING ===
+[2026-07-24 13:41:43] === CHATSERVER STARTING ===
+[2026-07-24 13:41:43] Target log file: D:\projetos\neural-api\manager\log\chatserver.log
+[2026-07-24 13:41:43] >>> CONFIGURATION: CPU Mode (--cpu requested) <<<
+[2026-07-24 13:41:51] Tokenizer loaded in 8,2s.
+[2026-07-24 13:41:51] [int8 weights (default) - less RAM, faster on CPU and GPU; on --gpu the codes stay resident on the device; --fp32 opts out]
+[2026-07-24 13:41:51] [--max-fast-memory: concatenated weight cache kept - faster forward, more RAM, GPU compatible]
+[2026-07-24 13:41:51] Loading D:\projetos\neural-api\models\Qwen2.5-0.5B-Instruct ...
+[2026-07-24 13:42:06] Model loaded in 14,8s.
+[2026-07-24 13:42:06] [int8 KV cache (default with int8 weights) - ~1/4 the KV RAM, logits not bit-exact; --kv-fp32 opts out]
+[2026-07-24 13:42:06] Model: qwen2, 630139776 params, vocab 151936, context 8192, chat format qwen, int8 weights.
+[2026-07-24 13:42:06] [KV-cache reuse ON - only the new prompt tail is prefilled each turn]
+[2026-07-24 13:42:06] [serial layer loop (--serial) - fully single-threaded]
+[2026-07-24 13:42:06] [sampling: top-p 0,80, temperature 0,70, repetition-penalty 1,10 - flags > generation_config.json > fallback]
+[2026-07-24 13:42:06] >>> RUNNING MODE: CPU Serial (Host Processor - Single-threaded Safe Mode) <<<
+[2026-07-24 13:42:06] Serving Qwen2.5-0.5B-Instruct on http://127.0.0.1:8095/v1 (SSE streaming with "stream":true; Ctrl+C stops)
+[2026-07-24 13:42:06] [SERVER ACCEPT LOOP EXCEPTION] ESocketError: Binding of socket failed: 8095
+[2026-07-24 13:42:06] === CHATSERVER STOPPING ===

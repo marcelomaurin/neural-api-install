@@ -69,3 +69,16 @@
 2026-07-24 13:13:25 - >>> HARDWARE SELECIONADO: CPU (Processador do Host - Sem GPU) <<<
 2026-07-24 13:13:25 - Processo executado no SO.
 2026-07-24 13:13:25 - Status detectado: ONLINE
+2026-07-24 13:41:43 - Status detectado: OFFLINE
+2026-07-24 13:41:43 - Auto On: ChatServer está offline. Tentando reiniciar (intervalo de 1 minuto)...
+2026-07-24 13:41:43 - Solicitação de inicialização do ChatServer.
+2026-07-24 13:41:43 - Iniciando binário: D:\projetos\neural-api\bin\x86_64-win64\bin\ChatServer.exe
+2026-07-24 13:41:43 - Modelo associado: D:\projetos\neural-api\models\Qwen2.5-0.5B-Instruct
+2026-07-24 13:41:43 - Porta selecionada: 8095
+2026-07-24 13:41:43 - Contexto (ctx): 8192
+2026-07-24 13:41:43 - Max New Tokens: 32
+2026-07-24 13:41:43 - >>> HARDWARE SELECIONADO: CPU (Processador do Host - Sem GPU) <<<
+2026-07-24 13:41:43 - Processo executado no SO.
+2026-07-24 13:41:43 - Status detectado: ONLINE
+2026-07-24 13:41:47 - Status detectado: OFFLINE
+2026-07-24 13:41:49 - Status detectado: ONLINE
